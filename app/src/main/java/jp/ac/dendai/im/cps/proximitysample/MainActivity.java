@@ -60,15 +60,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor != proximity) return;
 
-        // かざしたら計測を開始、離れた時に2秒経過していたらボタンを表示
+        // かざし始めて2.5秒経過していたらボタンを表示
+        if ((startTimeMillis != 0) && (System.currentTimeMillis() - startTimeMillis > 2500)) {
+            button.setVisibility(View.VISIBLE);
+        }
+
+        // かざし始めた時間を計測
         if (sensorEvent.values[0] < 5) {
-            if (startTimeMillis == 0) {
-                startTimeMillis = System.currentTimeMillis();
-            }
+            if (startTimeMillis == 0) startTimeMillis = System.currentTimeMillis();
         } else {
-            if ((startTimeMillis != 0) && (System.currentTimeMillis() - startTimeMillis > 2000)) {
-                button.setVisibility(View.VISIBLE);
-            }
             startTimeMillis = 0;
         }
     }
